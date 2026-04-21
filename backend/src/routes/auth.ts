@@ -11,7 +11,7 @@ const MOCK_USERS = [
     userId: 1,
     username: 'admin',
     password: 'admin123',
-    roleCode: 'super_admin' as RoleCode,
+    roleCode: 'system_admin' as RoleCode,
     uploadQuotaGb: 100,
   },
   {
