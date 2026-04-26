@@ -18,9 +18,8 @@ import type { DataCategory, DataType } from '../shared/types/upload';
 
 // ── 白名單 ────────────────────────────────────────────────────────────────────
 
-const ALLOWED_CATEGORIES = new Set<string>(['lidar', 'uav']);
-const ALLOWED_TYPES = new Set<string>([
-  'point_cloud', 'wind_field', 'boundary_layer',
+const ALLOWED_CATEGORIES = new Set(['uav']);
+const ALLOWED_TYPES = new Set([
   'sensor', 'flight_path', 'imagery', 'meteorological',
 ]);
 
