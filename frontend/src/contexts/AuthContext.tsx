@@ -9,7 +9,7 @@ interface AuthContextType {
   token: string | null;
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
-  clearMustChangePassword: () => void;
+  clearMustChangePassword: (newToken?: string) => void;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -18,7 +18,7 @@ const MOCK_USERS: (User & { password: string })[] = [
   {
     userId: 1,
     username: "admin",
-    password: "admin123",
+    password: import.meta.env.VITE_MOCK_ADMIN_PASSWORD ?? "admin123",
     email: "admin@taoyuan-air.gov.tw",
     fullName: "系統管理員",
     roleCode: "system_admin" as RoleCode,
@@ -32,7 +32,7 @@ const MOCK_USERS: (User & { password: string })[] = [
   {
     userId: 2,
     username: "manager",
-    password: "manager123",
+    password: import.meta.env.VITE_MOCK_MANAGER_PASSWORD ?? "manager123",
     email: "manager@taoyuan-air.gov.tw",
     fullName: "資料管理員",
     roleCode: "data_manager" as RoleCode,
@@ -46,7 +46,7 @@ const MOCK_USERS: (User & { password: string })[] = [
   {
     userId: 3,
     username: "viewer",
-    password: "viewer123",
+    password: import.meta.env.VITE_MOCK_VIEWER_PASSWORD ?? "viewer123",
     email: "viewer@taoyuan-air.gov.tw",
     fullName: "唯讀使用者",
     roleCode: "readonly" as RoleCode,
@@ -114,11 +114,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     sessionStorage.removeItem("auth_token");
   };
 
-  const clearMustChangePassword = () => {
+  const clearMustChangePassword = (newToken?: string) => {
     if (!user) return;
     const updated = { ...user, mustChangePassword: false };
     setUser(updated);
     sessionStorage.setItem("auth_user", JSON.stringify(updated));
+    if (newToken) {
+      setToken(newToken);
+      sessionStorage.setItem("auth_token", newToken);
+    }
   };
 
   return (
